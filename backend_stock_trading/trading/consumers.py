@@ -1,6 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+# Not using web sockets
 class AlertConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # This method is called when the WebSocket is handshaking as part of the connection process.

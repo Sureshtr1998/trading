@@ -1,0 +1,74 @@
+@use "sass:color";
+
+body {
+  font-family: 'Lato', sans-serif;
+  color: #202020;
+}
+
+
+
+table {
+  margin-top: 2rem;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  overflow: hidden;
+
+  td,
+  th {
+    text-align: center;
+    border-top: 1px solid #ECF0F1;
+    padding: 10px;
+  }
+
+  td {
+    border-left: 1px solid #ECF0F1;
+    border-right: 1px solid #ECF0F1;
+  }
+
+  th {
+    background-color: #4ECDC4;
+  }
+
+  tr:nth-of-type(even) td {
+    background-color: color.adjust(#4ECDC4, $lightness: 35%)
+  }
+
+}
+
+.icons {
+  margin-top: 10px;
+  color: red;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+input[type="text"] {
+  height: 2rem;
+  border: 2px solid rgb(209, 208, 208);
+  width: 20rem;
+}
+
+.center {
+  text-align: center;
+}
+
+.add_comp_btn {
+  margin-top: 1rem;
+  font-size: 16px;
+  padding: 12px 24px;
+  cursor: pointer;
+  background-color: transparent;
+  border: 2px solid #ef981f;
+  color: #ef981f;
+  transition: all 0.3s ease;
+
+}
+
+.table_action {
+
+  text-align: center;
+  color: #ef981f;
+  text-decoration: underline;
+  cursor: pointer;
+}

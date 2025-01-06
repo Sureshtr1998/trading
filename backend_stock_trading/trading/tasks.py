@@ -4,6 +4,7 @@ from channels.layers import get_channel_layer
 import time
 import pandas as pd
 
+# If we want to print data we need pandas
 
 pd.set_option('display.max_rows', None)  # Show all rows
 pd.set_option('display.max_columns', None)  # Show all columns

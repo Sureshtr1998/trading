@@ -1,6 +1,7 @@
-// src/App.js
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import "./App.scss"
+import { MdDeleteOutline } from "react-icons/md";
 
 type StockActions = "BUY" | "SELL" | "MONITORING"
 
@@ -21,14 +22,19 @@ const App = () => {
   useEffect(() => {
     // Set interval to call fetchStrategy every 30 seconds
     const intervalId = setInterval(() => {
-      companies.map(symbol => {
-        fetchStrategy(symbol)
-      })
+      fetchAllComps()
       // 30 seconds
     }, 30000);
 
     return () => clearInterval(intervalId);
-  }, [companies]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchAllComps = () => {
+    companies.map(symbol => {
+      fetchStrategy(symbol)
+    })
+  }
 
   const handleAddCompany = () => {
     if (newCompany && !companies.includes(newCompany)) {
@@ -56,45 +62,57 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Stock Trading Strategy</h1>
 
-      <input
-        type="text"
-        value={newCompany}
-        onChange={(e) => setNewCompany(e.target.value)}
-        placeholder="Enter Company Symbol (e.g., TCS.NS)"
-      />
-      <button onClick={handleAddCompany}>Add Company</button>
+      <h2 style={{ color: "#ef981f", textDecoration: "underline" }} className="center">Om Namah Shivaay!!!</h2>
+      <div className="center">
 
+        <input
+          className="center"
+          type="text"
+          value={newCompany}
+          onChange={(e) => setNewCompany(e.target.value)}
+          placeholder="Enter Company Symbol (e.g., TCS.NS)"
+        />
+
+
+        <br />
+        <button className="add_comp_btn" onClick={handleAddCompany}>Add Company</button>
+      </div>
       <div>
         {companies.length > 0 && (
-          <ul>
-            {companies.map((company) => (
-              <li key={company}>
-                {company}
-                <button onClick={() => handleRemoveCompany(company)}>Remove</button>
-                <div>
-                  <h3>Strategy for {company}</h3>
-                  <div>
-                    {companyStrategies[company] ? (
-                      <div>
-                        <p>Action: {companyStrategies[company].type}</p>
-                        <p>Current Price: {companyStrategies[company].current_price}</p>
-                        <p>Target Profit: {companyStrategies[company].target_profit}</p>
-                        <p>Stop Loss Price: {companyStrategies[company].stop_loss}</p>
-
-                      </div>
-                    ) : (
-                      <p>Loading...</p>
-                    )}
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </div>
+          <div>
+            <table>
+              <tr>
+                <th>Company</th>
+                <th>Action</th>
+                <th>Current Price</th>
+                <th>Target Profit</th>
+                <th>Stop Loss Price</th>
+                <th></th>
+              </tr>
+              {companies.map((company) => {
+                return companyStrategies[company] && (
+                  <tr key={company}>
+                    <td>{company}</td>
+                    <td>{companyStrategies[company].type}</td>
+                    <td>{companyStrategies[company].current_price}</td>
+                    <td>{companyStrategies[company].target_profit}</td>
+                    <td>{companyStrategies[company].stop_loss}</td>
+                    <td><MdDeleteOutline className="icons delete" onClick={() => handleRemoveCompany(company)} />
+                    </td>
+                  </tr>
+                )
+              })
+              }
+            </table>
+            <div className='table_action'>
+              <p onClick={fetchAllComps}> Refresh</p>
+            </div>
+          </div>
+        )
+        }
+      </div >
+    </div >
   );
 }
 
