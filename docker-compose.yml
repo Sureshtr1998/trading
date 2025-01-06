@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+# Unfortunately frontend is still failing for now go with npm run dev
+  # frontend:
+  #     # build:
+  #       # context: .
+  #       # dockerfile: Dockerfile.frontend  # This will use the Dockerfile for frontend-specific build
+  #   image: node:16
+  #   working_dir: /app/frontend_stock_trading
+  #   volumes:
+  #     - ./frontend_stock_trading:/app/frontend_stock_trading
+  #   command: npm run dev
+  #   ports:
+  #     - "5173:5173"
+
+  redis:
+    image: redis
+    command: redis-server --port 6380
+    ports:
+      - "6380:6380"
+
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app/backend_stock_trading
+    volumes:
+      - ./backend_stock_trading:/app/backend_stock_trading
+    command: bash -c "source /app/stocks_env/bin/activate && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app/backend_stock_trading
+    volumes:
+      - ./backend_stock_trading:/app/backend_stock_trading
+    command: bash -c "source /app/stocks_env/bin/activate && celery -A backend_stock_trading worker --loglevel=info --pool=gevent"
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6380/0  # Redis service name and port

@@ -1,0 +1,21 @@
+# Use a Node.js base image for the frontend
+FROM node:16
+
+# Set the working directory for the frontend
+WORKDIR /app/frontend_stock_trading
+
+# List the contents of the directory (for debugging)
+RUN ls -l /app/frontend_stock_trading
+
+# Remove any existing node_modules and package-lock.json (if any)
+RUN test -d node_modules && rm -rf node_modules || echo "No node_modules to remove"
+RUN test -f package-lock.json && rm package-lock.json || echo "No package-lock.json to remove"
+
+# Install dependencies for the frontend
+RUN npm install
+
+# Expose the port for the frontend development server
+EXPOSE 5173
+
+# Set the command to start the frontend application
+CMD ["npm", "run", "dev"]

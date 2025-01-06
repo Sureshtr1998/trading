@@ -131,9 +131,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #CELERY
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_BROKER_URL = 'redis://127.0.0.1:6380/0'  # Redis as message broker
-CELERY_RESULT_BACKEND = 'redis://localhost:6380/1'
+# Use this if docker is not using
+# CELERY_BROKER_URL = 'redis://127.0.0.1:6380/0'  # Redis as message broker
+# CELERY_RESULT_BACKEND = 'redis://localhost:6380/1'
+CELERY_RESULT_BACKEND = 'redis://redis:6380/1'
 
+CELERY_BROKER_URL = 'redis://redis:6380/0' 
 
 ASGI_APPLICATION = 'backend_stock_trading.asgi.application'
 

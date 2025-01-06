@@ -16,3 +16,17 @@ celery -A backend_stock_trading worker --loglevel=info --pool=gevent
 
 Frontend
 npm run dev
+
+
+<!-- To Execute using docker -->
+npm run dev (In frontend)
+docker-compose build
+docker-compose up
+
+<!-- http://localhost:5173/ -->
+
+<!-- If Docker is giving some issues -->
+docker-compose down
+docker-compose down --volumes --remove-orphans
+docker-compose build --no-cache
+docker-compose up
