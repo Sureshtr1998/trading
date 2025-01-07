@@ -87,7 +87,8 @@ const Monitor = (props: MonitorIntefrace) => {
 
     return <div>
         {companies.length > 0 && (
-            <div>   <p><b>  Monitor: </b></p>
+            <div>
+                <p style={{ color: "#ef981f", textDecoration: "underline" }} className="center"><b>Monitor</b></p>
                 <div className="table-container">
                     <table>
                         <thead>

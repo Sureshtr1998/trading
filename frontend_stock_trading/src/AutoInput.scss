@@ -1,5 +1,6 @@
 /* bg:e4e4e4 , border: #dbdbdb -> light */
 /* bg:1e1f26 , border: #2d2e36 -> dark */
+@use "sass:color";
 
 .sugesstion-auto {
     display: block;
@@ -27,18 +28,27 @@
 
 .suggestions>div {
     padding: 15px 25px;
-    border-bottom: 2px solid #4ECDC4;
+    border-bottom: 2px solid #f5c582;
     transition: all 0.1s ease;
 }
 
 .suggestions>div:hover {
-    background-color: #4ECDC4 !important;
+    background-color: #f5c582 !important;
     color: #000000;
 }
 
 .suggestions>div,
 .form-control-auto input {
     font-size: 14px !important;
-    background-color: #D9f4f2;
+    background-color: color.adjust(#f5c582, $lightness: 20%);
+    color: black;
+}
+
+.suggestions > div:nth-child(even) {
+    background-color: white !important;
+    color: black;
+}
+.suggestions > div:hover {
+    background-color: #f5c582 !important;
     color: black;
 }

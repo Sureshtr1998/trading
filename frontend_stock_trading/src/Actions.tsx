@@ -50,7 +50,7 @@ const Actions = () => {
         <div>
             {strategies.length > 0 &&
                 <div>
-                    <p><b>  Purchased Items: </b></p>
+                    <p style={{ color: "#ef981f", textDecoration: "underline" }} className="center"><b>Purchased Items</b></p>
                     <div className="table-container">
                         <table>
                             <thead>
