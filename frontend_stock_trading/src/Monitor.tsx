@@ -22,8 +22,8 @@ const Monitor = (props: MonitorIntefrace) => {
         // Set interval to call fetchStrategy every 30 seconds
         const intervalId = setInterval(() => {
             fetchAllComps()
-            // 30 seconds
-        }, 30000);
+            // 60 seconds
+        }, 60000);
 
         return () => clearInterval(intervalId);
 

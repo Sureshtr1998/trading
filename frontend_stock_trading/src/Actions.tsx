@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { localStorageKey, Strategy } from "./util";
-import { MdDeleteOutline } from "react-icons/md";
-
+import { useState, useEffect } from "react";
+import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
+import { Strategy, localStorageKey } from "./util";
 
 const Actions = () => {
     const [strategies, setStrategies] = useState<Strategy[]>([]);
+    const [editingRow, setEditingRow] = useState<string | null>(null);
 
     useEffect(() => {
         // Fetch data from local storage on component mount
@@ -14,14 +14,13 @@ const Actions = () => {
 
     const calculatePercentage = (type: string, livePrice: number, purchasedPrice: number) => {
         if (purchasedPrice === 0) return 0; // Prevent division by zero
-        const percentage =
-            ((livePrice - purchasedPrice) / purchasedPrice) * 100;
+        const percentage = ((livePrice - purchasedPrice) / purchasedPrice) * 100;
 
         // Adjust for SELL or BUY
         if (type === 'SELL') {
             return -(percentage); // For sell it is inverse
         } else if (type === 'BUY') {
-            return (percentage);
+            return percentage;
         }
 
         return percentage;
@@ -37,20 +36,32 @@ const Actions = () => {
             const parsedData = JSON.parse(storedData);
             const updatedData = parsedData.filter((item: Strategy) => item.symbol !== symbol);
             localStorage.setItem(localStorageKey, JSON.stringify(updatedData));
-            setStrategies(updatedData)
-
+            setStrategies(updatedData);
         } else {
             console.warn("No data found in local storage.");
         }
     };
 
+    const handleSave = (symbol: string, newPrice: number) => {
+        const updatedStrategies = strategies.map((strategy) =>
+            strategy.symbol === symbol
+                ? { ...strategy, current_price: newPrice }
+                : strategy
+        );
 
+        // Save to local storage
+        localStorage.setItem(localStorageKey, JSON.stringify(updatedStrategies));
+        setStrategies(updatedStrategies);
+        setEditingRow(null); // Exit editing mode
+    };
 
     return (
         <div>
-            {strategies.length > 0 &&
+            {strategies.length > 0 && (
                 <div>
-                    <p style={{ color: "#ef981f", textDecoration: "underline" }} className="center"><b>Purchased Items</b></p>
+                    <p style={{ color: "#ef981f", textDecoration: "underline" }} className="center">
+                        <b>Purchased Items</b>
+                    </p>
                     <div className="table-container">
                         <table>
                             <thead>
@@ -61,12 +72,11 @@ const Actions = () => {
                                     <th>Live Price</th>
                                     <th>Profit Percentage</th>
                                     <th></th>
-
                                 </tr>
                             </thead>
                             <tbody>
-                                {strategies.map((strategy, index) => (
-                                    <tr key={index}>
+                                {strategies.map((strategy) => (
+                                    <tr key={strategy.symbol}>
                                         <td>{strategy.symbol}</td>
                                         <td
                                             style={{
@@ -75,27 +85,57 @@ const Actions = () => {
                                         >
                                             {strategy.type}
                                         </td>
-                                        <td>{strategy.current_price.toFixed(2)}</td>
+                                        <td
+                                            onClick={() => setEditingRow(strategy.symbol)}
+                                            style={{ cursor: "pointer" }}
+                                        >
+
+                                            {editingRow === strategy.symbol ? (
+                                                <input
+                                                    className="purchased_input"
+                                                    type="number"
+                                                    defaultValue={strategy.current_price.toFixed(2)}
+                                                    onBlur={(e) => handleSave(strategy.symbol, parseFloat(e.target.value))}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === "Enter") {
+                                                            handleSave(strategy.symbol, parseFloat((e.target as HTMLInputElement).value));
+                                                        }
+                                                        if (e.key === "Escape") {
+                                                            setEditingRow(null);
+                                                        }
+                                                    }}
+                                                    autoFocus
+                                                />
+                                            ) : (
+                                                strategy.current_price.toFixed(2)
+                                            )}
+                                            <MdOutlineEdit className="icons edit" />
+                                        </td>
                                         <td>{strategy.live_price?.toFixed(2)}</td>
                                         <td
                                             style={{
                                                 color: calculatePercentage(strategy.type, strategy.live_price ?? 0, strategy.current_price) > 0
-                                                    ? 'green'
-                                                    : 'red',
+                                                    ? "green"
+                                                    : "red",
                                             }}
                                         >
                                             {formatPercentage(
                                                 calculatePercentage(strategy.type, strategy.live_price ?? 0, strategy.current_price)
                                             )}
                                         </td>
-                                        <td><MdDeleteOutline className="icons delete" onClick={() => handleRemoveCompany(strategy.symbol)} /></td>
+                                        <td>
+                                            <MdDeleteOutline
+                                                className="icons delete"
+                                                onClick={() => handleRemoveCompany(strategy.symbol)}
+                                            />
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
                 </div>
-            }
+            )}
         </div>
     );
 };

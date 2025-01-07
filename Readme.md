@@ -28,7 +28,7 @@ docker-compose up
 <!--  -->
 
 
-<!-- To Execute using docker and FE -->
+<!-- To Execute using docker and FE seperately if modifications has to be done in FE-->
 npm run dev (In frontend)
 docker-compose build
 docker-compose up

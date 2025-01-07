@@ -39,9 +39,28 @@ table {
   color: red;
   font-size: 18px;
   cursor: pointer;
+
 }
 
+.edit{
+  margin-top: 0;
+  float: right;
+  color: #fd7403;
+}
 
+.purchased_input{
+  text-align: center;
+  border-top: 1px solid #ECF0F1;
+  padding: 10px;
+  max-width: 50%;
+  font-size: 14px;
+}
+
+.purchased_input:focus{
+  border: 1px solid #f9970d !important;
+  background-color: #fefdfb;
+  outline: none;
+}
 
 .center {
   text-align: center;
