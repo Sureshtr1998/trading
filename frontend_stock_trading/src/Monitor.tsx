@@ -106,11 +106,11 @@ const Monitor = (props: MonitorIntefrace) => {
                                     <tr key={company}>
                                         <td>{company}</td>
                                         <td>
-                                            <button className={`comp_btn ${companyStrategies[company].type === "SELL" ? "sell_btn" : companyStrategies[company].type === "BUY" ? "buy_btn" : ""}`} onClick={() => handleAction(companyStrategies[company])}>{companyStrategies[company].type}</button>
+                                            <button className={`comp_btn ${companyStrategies[company].type === "SELL" ? "sell_btn" : companyStrategies[company].type === "BUY" ? "buy_btn" : "mod_btn"}`} onClick={() => handleAction(companyStrategies[company])}>{companyStrategies[company].type}</button>
                                         </td>
-                                        <td>{companyStrategies[company].current_price}</td>
-                                        <td>{companyStrategies[company].target_profit}</td>
-                                        <td>{companyStrategies[company].stop_loss}</td>
+                                        <td>{companyStrategies[company].current_price.toFixed(2)}</td>
+                                        <td>{companyStrategies[company].target_profit.toFixed(2)}</td>
+                                        <td>{companyStrategies[company].stop_loss.toFixed(2)}</td>
                                         <td><MdDeleteOutline className="icons delete" onClick={() => handleRemoveCompany(company)} />
                                         </td>
                                     </tr>

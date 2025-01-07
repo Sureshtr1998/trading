@@ -10,8 +10,6 @@ table {
   border-collapse: collapse;
   width: 100%;
 
-  width: 100%;
-
   td,
   th {
     text-align: center;
@@ -27,11 +25,11 @@ table {
   th {
     position: sticky;
     top: 0;
-    background-color: #4ECDC4;
+    background-color: #f5c582;
   }
 
   tr:nth-of-type(even) td {
-    background-color: color.adjust(#4ECDC4, $lightness: 35%)
+    background-color: color.adjust(#f5c582, $lightness: 20%)
   }
 
 }
@@ -58,9 +56,18 @@ table {
   transition: all 0.3s ease;
 }
 
+.mod_btn{
+  border: 2px solid gray;
+  color: gray;
+}
+
 .comp_btn:hover {
   background-color: #ef981f;
   color: white;
+}
+
+.mod_btn:hover {
+  background-color: gray;
 }
 
 .sell_btn {

@@ -52,7 +52,7 @@ const App = () => {
         <button className="comp_btn" onClick={() => window.open('/logs', '_blank')}>View All Logs</button>
         <button className="comp_btn" onClick={refetch}>Refetch</button>
       </div>
-      <div style={{ marginTop: "2rem" }}>
+      <div style={{ marginTop: "2rem", marginBottom: "5rem" }}>
         <Actions key={refresh} />
         <hr />
         <Monitor hardRefetch={hardRefetch} setRefresh={setRefresh} key={companies.length} companies={companies} handleRemoveCompany={handleRemoveCompany} />

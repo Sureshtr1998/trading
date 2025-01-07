@@ -51,47 +51,49 @@ const Actions = () => {
             {strategies.length > 0 &&
                 <div>
                     <p><b>  Purchased Items: </b></p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Company</th>
-                                <th>Type</th>
-                                <th>Purchased Price</th>
-                                <th>Live Price</th>
-                                <th>Profit Percentage</th>
-                                <th></th>
+                    <div className="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Company</th>
+                                    <th>Type</th>
+                                    <th>Purchased Price</th>
+                                    <th>Live Price</th>
+                                    <th>Profit Percentage</th>
+                                    <th></th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {strategies.map((strategy, index) => (
-                                <tr key={index}>
-                                    <td>{strategy.symbol}</td>
-                                    <td
-                                        style={{
-                                            color: strategy.type === "BUY" ? "green" : strategy.type === "SELL" ? "red" : "gray",
-                                        }}
-                                    >
-                                        {strategy.type}
-                                    </td>
-                                    <td>{strategy.current_price}</td>
-                                    <td>{strategy.live_price}</td>
-                                    <td
-                                        style={{
-                                            color: calculatePercentage(strategy.type, strategy.live_price ?? 0, strategy.current_price) > 0
-                                                ? 'green'
-                                                : 'red',
-                                        }}
-                                    >
-                                        {formatPercentage(
-                                            calculatePercentage(strategy.type, strategy.live_price ?? 0, strategy.current_price)
-                                        )}
-                                    </td>
-                                    <td><MdDeleteOutline className="icons delete" onClick={() => handleRemoveCompany(strategy.symbol)} /></td>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {strategies.map((strategy, index) => (
+                                    <tr key={index}>
+                                        <td>{strategy.symbol}</td>
+                                        <td
+                                            style={{
+                                                color: strategy.type === "BUY" ? "green" : strategy.type === "SELL" ? "red" : "gray",
+                                            }}
+                                        >
+                                            {strategy.type}
+                                        </td>
+                                        <td>{strategy.current_price.toFixed(2)}</td>
+                                        <td>{strategy.live_price?.toFixed(2)}</td>
+                                        <td
+                                            style={{
+                                                color: calculatePercentage(strategy.type, strategy.live_price ?? 0, strategy.current_price) > 0
+                                                    ? 'green'
+                                                    : 'red',
+                                            }}
+                                        >
+                                            {formatPercentage(
+                                                calculatePercentage(strategy.type, strategy.live_price ?? 0, strategy.current_price)
+                                            )}
+                                        </td>
+                                        <td><MdDeleteOutline className="icons delete" onClick={() => handleRemoveCompany(strategy.symbol)} /></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             }
         </div>
