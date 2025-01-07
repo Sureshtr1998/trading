@@ -17,7 +17,8 @@ celery -A backend_stock_trading worker --loglevel=info --pool=gevent
 Frontend
 npm run dev
 
-
+To activate stocks_env
+D:\Trading\stocks_env\Scripts\activate  
 <!-- To Execute using docker -->
 npm run dev (In frontend)
 docker-compose build

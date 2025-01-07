@@ -50,7 +50,7 @@ const Actions = () => {
         <div>
             {strategies.length > 0 &&
                 <div>
-                    <p><b>  Actions: </b></p>
+                    <p><b>  Purchased Items: </b></p>
                     <table>
                         <thead>
                             <tr>
@@ -69,7 +69,7 @@ const Actions = () => {
                                     <td>{strategy.symbol}</td>
                                     <td
                                         style={{
-                                            color: strategy.type === "BUY" ? "green" : strategy.type === "SELL" ? "red" : "black",
+                                            color: strategy.type === "BUY" ? "green" : strategy.type === "SELL" ? "red" : "gray",
                                         }}
                                     >
                                         {strategy.type}

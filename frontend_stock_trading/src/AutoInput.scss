@@ -7,6 +7,7 @@
     position: relative;
    
     input{
+        text-align: center;
         height: 2rem;
         border: 2px solid rgb(209, 208, 208);
         width: 40rem;
@@ -26,18 +27,18 @@
 
 .suggestions>div {
     padding: 15px 25px;
-    border-bottom: 2px solid rgb(226, 222, 222);
+    border-bottom: 2px solid #4ECDC4;
     transition: all 0.1s ease;
 }
 
 .suggestions>div:hover {
-    background-color: rgb(226, 222, 222) !important;
+    background-color: #4ECDC4 !important;
     color: #000000;
 }
 
 .suggestions>div,
 .form-control-auto input {
     font-size: 14px !important;
-    background-color: white;
+    background-color: #D9f4f2;
     color: black;
 }

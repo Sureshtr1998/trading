@@ -73,7 +73,7 @@ const Monitor = (props: MonitorIntefrace) => {
 
 
     const handleAction = (strategy: Strategy | null) => {
-        if (!strategy || strategy.type === "MONITORING") return;
+        if (!strategy) return;
 
         const existingData = JSON.parse(localStorage.getItem(localStorageKey) || "[]"); // Retrieve existing data or initialize an empty array
 
@@ -106,7 +106,7 @@ const Monitor = (props: MonitorIntefrace) => {
                                     <tr key={company}>
                                         <td>{company}</td>
                                         <td>
-                                            <button className={`comp_btn ${companyStrategies[company].type === "SELL" ? "sell_btn" : companyStrategies[company].type === "BUY" ? "buy_btn" : "mod_btn"}`} onClick={() => handleAction(companyStrategies[company])}>{companyStrategies[company].type}</button>
+                                            <button className={`comp_btn ${companyStrategies[company].type === "SELL" ? "sell_btn" : companyStrategies[company].type === "BUY" ? "buy_btn" : ""}`} onClick={() => handleAction(companyStrategies[company])}>{companyStrategies[company].type}</button>
                                         </td>
                                         <td>{companyStrategies[company].current_price}</td>
                                         <td>{companyStrategies[company].target_profit}</td>
