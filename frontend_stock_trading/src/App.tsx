@@ -1,129 +1,62 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import "./App.scss"
-import { MdDeleteOutline } from "react-icons/md";
-import { BASE_API } from './util';
-
-type StockActions = "BUY" | "SELL" | "MONITORING"
-
-interface Strategy {
-  symbol: string,
-  type: StockActions,
-  current_price: number,
-  target_profit: number,
-  stop_loss: number,
-}
+import Monitor from './Monitor';
+import Actions from './Actions';
+import { localStorageKey, Strategy } from './util';
+import InputAuto from './InputAuto';
 
 
 const App = () => {
   const [companies, setCompanies] = useState<string[]>([]);
-  const [newCompany, setNewCompany] = useState<string>('');
-  const [companyStrategies, setCompanyStrategies] = useState<Record<string, Strategy | null>>({});
-
-
+  const [refresh, setRefresh] = useState<string>('')
+  const [hardRefetch, setHardRefetch] = useState<string>("")
 
   useEffect(() => {
-    // Set interval to call fetchStrategy every 30 seconds
-    const intervalId = setInterval(() => {
-      fetchAllComps()
-      // 30 seconds
-    }, 30000);
-
-    return () => clearInterval(intervalId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const fetchAllComps = () => {
-    companies.map(symbol => {
-      fetchStrategy(symbol)
+    const existingData = JSON.parse(localStorage.getItem(localStorageKey) || "[]");
+    const comps: string[] = []
+    existingData.map((strat: Strategy) => {
+      comps.push(strat.symbol)
     })
-  }
+    setCompanies([...comps])
+  }, [])
 
-  const handleAddCompany = () => {
-    if (newCompany && !companies.includes(newCompany)) {
-      setCompanies([...companies, newCompany]);
-      setNewCompany('');
-      fetchStrategy(newCompany);
-    }
-  };
 
   const handleRemoveCompany = (symbol: string) => {
     setCompanies(companies.filter((company) => company !== symbol));
   };
 
-  const viewAllLogs = () => {
-    window.open('/logs', '_blank');
+  const clearAll = () => {
+    localStorage.clear()
+    setCompanies([])
   }
 
-  const fetchStrategy = async (symbol: string) => {
-    try {
-      const response = await axios.get(`${BASE_API}trading-strategy/${symbol}/`);
-      setCompanyStrategies((prevState) => ({
-        ...prevState,
-        [symbol]: response.data.strategy,
-      }));
-    } catch (error) {
-      console.error('Error fetching strategy:', error);
+
+  const refetch = () => {
+    setHardRefetch(new Date().toString())
+  }
+
+  const onSelected = (symbol: string) => {
+    if (symbol && !companies.includes(symbol)) {
+      setCompanies([...companies, symbol]);
     }
-  };
+  }
 
   return (
     <div className="App">
 
-      <h2 style={{ color: "#ef981f", textDecoration: "underline" }} className="center">Om Namah Shivaay!!!</h2>
-      <div className="center">
-
-        <input
-          className="center"
-          type="text"
-          value={newCompany}
-          onChange={(e) => setNewCompany(e.target.value)}
-          placeholder="Enter Company Symbol (e.g., TCS.NS)"
-        />
-
-
-        <br />
-        <button className="add_comp_btn" onClick={handleAddCompany}>Add Company</button>
+      <h4 style={{ color: "#ef981f", textDecoration: "underline" }} className="center">Om Namah Shivaay!!!</h4>
+      <div className="center" style={{ display: "flex", justifyContent: "center" }}>
+        <InputAuto onSelected={onSelected} />
+        {/* <button className="comp_btn" onClick={handleAddCompany}>Add Company</button> */}
+        <button className="comp_btn" onClick={clearAll}>Clear All</button>
+        <button className="comp_btn" onClick={() => window.open('/logs', '_blank')}>View All Logs</button>
+        <button className="comp_btn" onClick={refetch}>Refetch</button>
       </div>
-      <div>
-        {companies.length > 0 && (
-          <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Company</th>
-                  <th>Action</th>
-                  <th>Current Price</th>
-                  <th>Target Profit</th>
-                  <th>Stop Loss Price</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {companies.map((company) => {
-                  return companyStrategies[company] && (
-                    <tr key={company}>
-                      <td>{company}</td>
-                      <td>{companyStrategies[company].type}</td>
-                      <td>{companyStrategies[company].current_price}</td>
-                      <td>{companyStrategies[company].target_profit}</td>
-                      <td>{companyStrategies[company].stop_loss}</td>
-                      <td><MdDeleteOutline className="icons delete" onClick={() => handleRemoveCompany(company)} />
-                      </td>
-                    </tr>
-                  )
-                })
-                }
-              </tbody>
-            </table>
-            <div className='table_action'>
-              <p style={{ marginRight: '1rem' }} onClick={fetchAllComps}> Refetch</p>
-              <p style={{ marginLeft: '1rem' }} onClick={viewAllLogs}> View All Logs</p>
-            </div>
-          </div>
-        )
-        }
-      </div >
+      <div style={{ marginTop: "2rem" }}>
+        <Actions key={refresh} />
+        <hr />
+        <Monitor hardRefetch={hardRefetch} setRefresh={setRefresh} key={companies.length} companies={companies} handleRemoveCompany={handleRemoveCompany} />
+      </div>
     </div >
   );
 }

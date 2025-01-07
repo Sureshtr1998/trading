@@ -43,26 +43,48 @@ table {
   cursor: pointer;
 }
 
-input[type="text"] {
-  height: 2rem;
-  border: 2px solid rgb(209, 208, 208);
-  width: 20rem;
-}
+
 
 .center {
   text-align: center;
 }
 
-.add_comp_btn {
-  margin-top: 1rem;
-  font-size: 16px;
-  padding: 12px 24px;
+.comp_btn {
   cursor: pointer;
+  margin-left: 1rem;
   background-color: transparent;
   border: 2px solid #ef981f;
   color: #ef981f;
   transition: all 0.3s ease;
+}
 
+.comp_btn:hover {
+  background-color: #ef981f;
+  color: white;
+}
+
+.sell_btn {
+  border: 2px solid red;
+  color: red;
+}
+
+.sell_btn:hover {
+  background-color: red;
+  color: white;
+}
+
+.buy_btn {
+  border: 2px solid green;
+  color: green;
+}
+
+.buy_btn:hover {
+  background-color: green;
+  color: white;
+}
+
+.mod_btn {
+  cursor: auto;
 }
 
 .table_action {

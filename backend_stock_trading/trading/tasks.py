@@ -37,7 +37,7 @@ def breakout_volume_strategy(symbol, interval=60):
         return {
             'symbol': symbol,
             'type': "BUY",
-            'entry_price': current_price,
+            'current_price': current_price,
             'target_profit': current_price * 1.02,  # Target 2% profit
             'stop_loss': current_price * 0.99,  # Stop loss at 1% below
         }
@@ -64,8 +64,8 @@ def enhanced_breakout_strategy(symbol, interval=60):
     
     if len(data) < 30:
         print(f"⚠️ Not enough data yet for {symbol}. Waiting for the first 30 minutes.")
-        time.sleep(interval)
-        return enhanced_breakout_strategy(symbol, interval)
+        # time.sleep(interval)
+        # return enhanced_breakout_strategy(symbol, interval)
     
     # Calculate VWAP
     data['VWAP'] = (data['Close'] * data['Volume']).cumsum() / data['Volume'].cumsum()
@@ -85,7 +85,7 @@ def enhanced_breakout_strategy(symbol, interval=60):
         return {
             'symbol': symbol,
             'type': "BUY",
-            'entry_price': current_price,
+            'current_price': current_price,
             'target_profit': current_price * 1.02,  # Target 2% profit
             'stop_loss': current_price * 0.98,  # Stop loss at 2% below
         }
@@ -93,7 +93,7 @@ def enhanced_breakout_strategy(symbol, interval=60):
         return {
             'symbol': symbol,
             'type': "SELL",
-            'entry_price': current_price,
+            'current_price': current_price,
             'target_profit': current_price * 0.98,  # Target 2% profit
             'stop_loss': current_price * 1.02,  # Stop loss at 2% above
         }
