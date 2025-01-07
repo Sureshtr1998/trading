@@ -19,10 +19,20 @@ npm run dev
 
 To activate stocks_env
 D:\Trading\stocks_env\Scripts\activate  
-<!-- To Execute using docker -->
+
+
+<!-- EXECUTION Works-->
+docker-compose build 
+docker-compose up
+
+<!--  -->
+
+
+<!-- To Execute using docker and FE -->
 npm run dev (In frontend)
 docker-compose build
 docker-compose up
+<!--  -->
 
 <!-- http://localhost:5173/ -->
 
