@@ -28,6 +28,7 @@ const App = () => {
   const clearAll = () => {
     localStorage.clear()
     setCompanies([])
+    setRefresh(new Date().toString())
   }
 
 
