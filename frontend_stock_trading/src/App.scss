@@ -6,13 +6,11 @@ body {
 }
 
 
-
 table {
-  margin-top: 2rem;
-  width: 100%;
   border-collapse: collapse;
-  text-align: left;
-  overflow: hidden;
+  width: 100%;
+
+  width: 100%;
 
   td,
   th {
@@ -27,6 +25,8 @@ table {
   }
 
   th {
+    position: sticky;
+    top: 0;
     background-color: #4ECDC4;
   }
 
@@ -66,9 +66,17 @@ input[type="text"] {
 }
 
 .table_action {
-
+  display: flex;
   text-align: center;
   color: #ef981f;
   text-decoration: underline;
   cursor: pointer;
+  justify-self: center;
+}
+
+.table-container {
+  max-height: 70vh;
+  margin-top: 2rem;
+  overflow-y: auto;
+  border: 1px solid #ccc;
 }

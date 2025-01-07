@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import "./App.scss"
 import { MdDeleteOutline } from "react-icons/md";
+import { BASE_API } from './util';
 
 type StockActions = "BUY" | "SELL" | "MONITORING"
 
@@ -18,6 +19,8 @@ const App = () => {
   const [companies, setCompanies] = useState<string[]>([]);
   const [newCompany, setNewCompany] = useState<string>('');
   const [companyStrategies, setCompanyStrategies] = useState<Record<string, Strategy | null>>({});
+
+
 
   useEffect(() => {
     // Set interval to call fetchStrategy every 30 seconds
@@ -48,9 +51,13 @@ const App = () => {
     setCompanies(companies.filter((company) => company !== symbol));
   };
 
+  const viewAllLogs = () => {
+    window.open('/logs', '_blank');
+  }
+
   const fetchStrategy = async (symbol: string) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/trading-strategy/${symbol}/`);
+      const response = await axios.get(`${BASE_API}trading-strategy/${symbol}/`);
       setCompanyStrategies((prevState) => ({
         ...prevState,
         [symbol]: response.data.strategy,
@@ -80,33 +87,38 @@ const App = () => {
       </div>
       <div>
         {companies.length > 0 && (
-          <div>
+          <div className="table-container">
             <table>
-              <tr>
-                <th>Company</th>
-                <th>Action</th>
-                <th>Current Price</th>
-                <th>Target Profit</th>
-                <th>Stop Loss Price</th>
-                <th></th>
-              </tr>
-              {companies.map((company) => {
-                return companyStrategies[company] && (
-                  <tr key={company}>
-                    <td>{company}</td>
-                    <td>{companyStrategies[company].type}</td>
-                    <td>{companyStrategies[company].current_price}</td>
-                    <td>{companyStrategies[company].target_profit}</td>
-                    <td>{companyStrategies[company].stop_loss}</td>
-                    <td><MdDeleteOutline className="icons delete" onClick={() => handleRemoveCompany(company)} />
-                    </td>
-                  </tr>
-                )
-              })
-              }
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Action</th>
+                  <th>Current Price</th>
+                  <th>Target Profit</th>
+                  <th>Stop Loss Price</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {companies.map((company) => {
+                  return companyStrategies[company] && (
+                    <tr key={company}>
+                      <td>{company}</td>
+                      <td>{companyStrategies[company].type}</td>
+                      <td>{companyStrategies[company].current_price}</td>
+                      <td>{companyStrategies[company].target_profit}</td>
+                      <td>{companyStrategies[company].stop_loss}</td>
+                      <td><MdDeleteOutline className="icons delete" onClick={() => handleRemoveCompany(company)} />
+                      </td>
+                    </tr>
+                  )
+                })
+                }
+              </tbody>
             </table>
             <div className='table_action'>
-              <p onClick={fetchAllComps}> Refresh</p>
+              <p style={{ marginRight: '1rem' }} onClick={fetchAllComps}> Refetch</p>
+              <p style={{ marginLeft: '1rem' }} onClick={viewAllLogs}> View All Logs</p>
             </div>
           </div>
         )
