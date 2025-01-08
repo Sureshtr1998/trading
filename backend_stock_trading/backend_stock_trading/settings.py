@@ -142,7 +142,8 @@ CELERY_RESULT_BACKEND = 'redis://redis:6380/1'
 
 # CELERY_BROKER_URL = 'redis://redis:6380/0' 
 # Using environment variable for Redis URL (if it's available)
-CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://redis:6380/0')
+CELERY_BROKER_URL = "redis://red-ctvd6cqj1k6c73en71tg:6379"
+# CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://redis:6380/0')
 
 ASGI_APPLICATION = 'backend_stock_trading.asgi.application'
 
