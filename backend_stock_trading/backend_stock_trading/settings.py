@@ -136,14 +136,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 # Use this if docker is not using
-# CELERY_BROKER_URL = 'redis://127.0.0.1:6380/0'  # Redis as message broker
-# CELERY_RESULT_BACKEND = 'redis://localhost:6380/1'
-CELERY_RESULT_BACKEND = 'redis://redis:6380/1'
+# CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'  # Redis as message broker
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/1'
 
-# CELERY_BROKER_URL = 'redis://redis:6380/0' 
+# CELERY_BROKER_URL = 'redis://redis:6379/0' 
 # Using environment variable for Redis URL (if it's available)
-CELERY_BROKER_URL = "redis://red-ctvd6cqj1k6c73en71tg:6379"
-# CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://redis:6380/0')
+# CELERY_BROKER_URL = "redis://red-ctvd6cqj1k6c73en71tg:6379"
+CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://redis:6379/0')
 
 ASGI_APPLICATION = 'backend_stock_trading.asgi.application'
 
@@ -151,7 +151,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6380)],  # Local Redis server
+            "hosts": [('127.0.0.1', 6379)],  # Local Redis server
         },
     },
 }

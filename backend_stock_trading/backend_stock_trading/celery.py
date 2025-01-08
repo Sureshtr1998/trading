@@ -8,7 +8,7 @@ from celery import Celery
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend_stock_trading.settings')
 
-app = Celery('backend_stock_trading',broker='redis://localhost:6380/0')
+app = Celery('backend_stock_trading',broker='redis://localhost:6379/0')
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
@@ -20,7 +20,7 @@ app.autodiscover_tasks()
 
 
 app.conf.update(
-    result_backend='redis://localhost:6380/0',  # Use Redis as the result backend
+    result_backend='redis://localhost:6379/0',  # Use Redis as the result backend
 )
 
 app.conf.worker_concurrency = 2 

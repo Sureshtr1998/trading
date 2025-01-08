@@ -9,6 +9,7 @@ workon stocks
 wsl --install (Powershell)
 
 In WSL execute hostname -I to get IP and use it in celery ip
+Make it as 6380 in local and in Render keep it as 6379 (Do it everywhere)
 redis-server --port 6380
 <!-- daphne backend_stock_trading.asgi:application -->
 python manage.py runserver

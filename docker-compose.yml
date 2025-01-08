@@ -2,9 +2,9 @@ version: "3.8"
 services:
   redis:
     image: redis
-    command: redis-server --port 6380
+    command: redis-server --port 6379
     ports:
-      - "6380:6380"
+      - "6379:6379"
 
   django:
     build:
@@ -26,4 +26,4 @@ services:
       - ./backend_stock_trading:/app/backend_stock_trading
     command: celery -A backend_stock_trading worker --loglevel=info --pool=gevent
     environment:
-      - CELERY_BROKER_URL=redis://redis:6380/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
