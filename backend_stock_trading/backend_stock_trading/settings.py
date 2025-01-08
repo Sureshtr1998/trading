@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -140,7 +140,9 @@ CELERY_TASK_SERIALIZER = 'json'
 # CELERY_RESULT_BACKEND = 'redis://localhost:6380/1'
 CELERY_RESULT_BACKEND = 'redis://redis:6380/1'
 
-CELERY_BROKER_URL = 'redis://redis:6380/0' 
+# CELERY_BROKER_URL = 'redis://redis:6380/0' 
+# Using environment variable for Redis URL (if it's available)
+CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://redis:6380/0')
 
 ASGI_APPLICATION = 'backend_stock_trading.asgi.application'
 
