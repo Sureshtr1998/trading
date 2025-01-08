@@ -1,17 +1,8 @@
 # Base image
 FROM python:3.9-slim
 
-# Install virtualenv
-RUN apt-get update && apt-get install -y \
-    python3-venv \
-    python3-pip \
-    && pip install virtualenv
-
-
-
-# Set environment variables for virtualenv
-ENV WORKON_HOME=/root/.virtualenvs
-RUN mkdir -p $WORKON_HOME
+# Install system dependencies
+RUN apt-get update && apt-get install -y python3-pip
 
 # Set working directory
 WORKDIR /app
@@ -19,8 +10,11 @@ WORKDIR /app
 # Copy project files
 COPY . .
 
-# Create the virtual environment
-RUN python3 -m venv /app/stocks_env
+# Install dependencies
+RUN pip install --no-cache-dir -r backend_stock_trading/requirements.txt
 
-# Create the `stocks` environment
-RUN /bin/bash -c "source /app/stocks_env/bin/activate && pip install -r backend_stock_trading/requirements.txt"
+# Expose port 8000
+EXPOSE 8000
+
+# Default command to run the Django server
+CMD ["python", "backend_stock_trading/manage.py", "runserver", "0.0.0.0:8000"]

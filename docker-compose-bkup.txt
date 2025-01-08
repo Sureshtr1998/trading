@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  # frontend:
+  #   image: node:18
+  #   platform: linux/amd64
+  #   working_dir: /app/frontend_stock_trading
+  #   volumes:
+  #     - ./frontend_stock_trading:/app/frontend_stock_trading
+  #   command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+  #   ports:
+  #     - "5173:5173"
+
+  redis:
+    image: redis
+    command: redis-server --port 6380
+    ports:
+      - "6380:6380"
+
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app/backend_stock_trading
+    volumes:
+      - ./backend_stock_trading:/app/backend_stock_trading
+    command: bash -c "source /app/stocks_env/bin/activate && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app/backend_stock_trading
+    volumes:
+      - ./backend_stock_trading:/app/backend_stock_trading
+    command: bash -c "source /app/stocks_env/bin/activate && celery -A backend_stock_trading worker --loglevel=info --pool=gevent"
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6380/0 # Redis service name and port
