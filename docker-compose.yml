@@ -13,9 +13,13 @@ services:
     working_dir: /app/backend_stock_trading
     volumes:
       - ./backend_stock_trading:/app/backend_stock_trading
+    environment:
+      - REDIS_URL=redis://redis:6379/0
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
+    depends_on:
+      - redis
 
   celery:
     build:
@@ -24,6 +28,8 @@ services:
     working_dir: /app/backend_stock_trading
     volumes:
       - ./backend_stock_trading:/app/backend_stock_trading
-    command: celery -A backend_stock_trading worker --loglevel=info --pool=gevent
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
+    command: celery -A backend_stock_trading worker --loglevel=info --pool=gevent
+    depends_on:
+      - redis

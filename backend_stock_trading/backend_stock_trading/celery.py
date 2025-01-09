@@ -20,7 +20,8 @@ app.autodiscover_tasks()
 
 
 app.conf.update(
-    result_backend='redis://localhost:6379/0',  # Use Redis as the result backend
+    broker_url=os.getenv('REDIS_URL', 'redis://redis:6379/0'),
+    result_backend=os.getenv('REDIS_RESULT_BACKEND', 'redis://redis:6379/1'),
 )
 
 app.conf.worker_concurrency = 2 
