@@ -145,13 +145,18 @@ CELERY_RESULT_BACKEND = 'redis://redis:6379/1'
 # CELERY_BROKER_URL = "redis://red-ctvd6cqj1k6c73en71tg:6379"
 CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://redis:6379/0')
 
+# Connect to your internal Redis instance using the REDIS_URL environment variable
+# The REDIS_URL is set to the internal Redis URL e.g. redis://red-343245ndffg023:6379
+# CELERY_BROKER_URL  = redis.from_url(os.environ['REDIS_URL'])
+
+
 ASGI_APPLICATION = 'backend_stock_trading.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],  # Local Redis server
+             "hosts": [os.getenv('REDIS_URL', 'redis://localhost:6379')],  # Local Redis server
         },
     },
 }
