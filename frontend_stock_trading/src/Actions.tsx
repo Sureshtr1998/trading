@@ -55,13 +55,30 @@ const Actions = () => {
         setEditingRow(null); // Exit editing mode
     };
 
+    const calcTotalProfit = () => {
+        let val = 0
+        strategies.map((strategy) => {
+            if (strategy.type !== "MONITORING") {
+                val = val + calculatePercentage(strategy.type, strategy.live_price ?? 0, strategy.current_price)
+            }
+        })
+        return val
+    }
+
     return (
         <div>
             {strategies.length > 0 && (
                 <div>
-                    <p style={{ color: "#ef981f", textDecoration: "underline" }} className="center">
-                        <b>Purchased Items</b>
-                    </p>
+                    <div style={{ display: "flex", justifySelf: "center" }}>
+                        <p style={{ color: "#ef981f", textDecoration: "underline" }} className="center">
+                            <b>Purchased Items</b>
+                        </p>
+                        <p style={{ marginLeft: "1rem", color: "#ef981f", textDecoration: "underline" }}>Total Profit: <span style={{
+                            color: calcTotalProfit() > 0
+                                ? "green"
+                                : "red",
+                        }}>  {calcTotalProfit().toFixed(2)}</span> </p>
+                    </div>
                     <div className="table-container">
                         <table>
                             <thead>
@@ -69,6 +86,7 @@ const Actions = () => {
                                     <th>Company</th>
                                     <th>Type</th>
                                     <th>Purchased Price</th>
+                                    <th>Purchased Rating</th>
                                     <th>Live Price</th>
                                     <th>Profit Percentage</th>
                                     <th></th>
@@ -111,6 +129,24 @@ const Actions = () => {
                                             )}
                                             <MdOutlineEdit className="icons edit" />
                                         </td>
+                                        <td>
+                                            {[...Array(5)].map((_, index) => (
+                                                <span
+                                                    key={index}
+                                                    style={{
+                                                        color:
+                                                            index <
+                                                                (strategy.rating ?? 0)
+                                                                ? "#fd7403"
+                                                                : "#CCCCCC",
+                                                        fontSize: "18px",
+                                                    }}
+                                                >
+                                                    ★
+                                                </span>
+                                            ))}
+                                        </td>
+
                                         <td>{strategy.live_price?.toFixed(2)}</td>
                                         <td
                                             style={{

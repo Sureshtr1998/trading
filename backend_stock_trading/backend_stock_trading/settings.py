@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -139,16 +142,12 @@ CELERY_TASK_SERIALIZER = 'json'
 # CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'  # Redis as message broker
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
 # CELERY_RESULT_BACKEND = 'redis://redis:6379/1'
-
 # CELERY_BROKER_URL = 'redis://redis:6379/0' 
 # Using environment variable for Redis URL (if it's available)
-# CELERY_BROKER_URL = "redis://red-ctvd6cqj1k6c73en71tg:6379"
+
 CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://redis:6379/0')
 CELERY_RESULT_BACKEND = os.getenv('REDIS_RESULT_BACKEND', 'redis://redis:6379/1')
 
-# Connect to your internal Redis instance using the REDIS_URL environment variable
-# The REDIS_URL is set to the internal Redis URL e.g. redis://red-343245ndffg023:6379
-# CELERY_BROKER_URL  = redis.from_url(os.environ['REDIS_URL'])
 
 
 ASGI_APPLICATION = 'backend_stock_trading.asgi.application'

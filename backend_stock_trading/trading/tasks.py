@@ -22,8 +22,14 @@ def enhanced_breakout_strategy(symbol):
     
     if len(data) < 30:
         print(f"⚠️ Not enough data yet for {symbol}. Waiting for the first 30 minutes.")
-        # time.sleep(interval)
-        # return enhanced_breakout_strategy(symbol, interval)
+        return {
+            'symbol': symbol,
+            'type': "MONITORING",
+            'current_price': None,
+            'target_profit': 0,
+            'stop_loss': 0,
+            'rating': 1,  # Not enough data to rate
+        }
     
     # Calculate VWAP
     data['VWAP'] = (data['Close'] * data['Volume']).cumsum() / data['Volume'].cumsum()
@@ -38,6 +44,28 @@ def enhanced_breakout_strategy(symbol):
     vwap = data['VWAP'].iloc[-1]
     rsi = data['RSI'].iloc[-1]
 
+    # Determine rating
+    if current_price > vwap:
+        if rsi > 70:
+            rating = 5  # Strong buy signal
+        elif rsi > 60:
+            rating = 4  # Buy signal
+        elif rsi > 50:
+            rating = 3  # Weak buy signal
+        else:
+            rating = 2  # Monitoring phase
+    elif current_price < vwap:
+        if rsi < 30:
+            rating = 5  # Strong sell signal
+        elif rsi < 40:
+            rating = 4  # Sell signal
+        elif rsi < 50:
+            rating = 3  # Weak sell signal
+        else:
+            rating = 2  # Monitoring phase
+    else:
+        rating = 1  # No clear signal
+
     # Entry conditions
     if current_price > vwap and rsi > 50:
         return {
@@ -46,6 +74,7 @@ def enhanced_breakout_strategy(symbol):
             'current_price': current_price,
             'target_profit': current_price * 1.02,  # Target 2% profit
             'stop_loss': current_price * 0.98,  # Stop loss at 2% below
+            'rating': rating,
         }
     elif current_price < vwap and rsi < 50:
         return {
@@ -54,6 +83,7 @@ def enhanced_breakout_strategy(symbol):
             'current_price': current_price,
             'target_profit': current_price * 0.98,  # Target 2% profit
             'stop_loss': current_price * 1.02,  # Stop loss at 2% above
+            'rating': rating,
         }
     
     return {
@@ -62,8 +92,8 @@ def enhanced_breakout_strategy(symbol):
         'current_price': current_price,
         'target_profit': 0,
         'stop_loss': 0,
+        'rating': rating,
     }
-
 
 @shared_task
 def fetch_trading_strategy(symbol):

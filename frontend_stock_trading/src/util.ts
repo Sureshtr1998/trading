@@ -9,6 +9,7 @@ export interface Strategy {
     target_profit: number,
     stop_loss: number,
     live_price?: number,
+    rating: number
 }
 
 export const localStorageKey = "companyStrategies";

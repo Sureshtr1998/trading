@@ -98,6 +98,7 @@ const Monitor = (props: MonitorIntefrace) => {
                                 <th>Current Price</th>
                                 <th>Target Profit</th>
                                 <th>Stop Loss Price</th>
+                                <th>Rating</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -112,6 +113,26 @@ const Monitor = (props: MonitorIntefrace) => {
                                         <td>{companyStrategies[company].current_price.toFixed(2)}</td>
                                         <td>{companyStrategies[company].target_profit.toFixed(2)}</td>
                                         <td>{companyStrategies[company].stop_loss.toFixed(2)}</td>
+                                        <td>
+                                            {[...Array(5)].map((_, index) => (
+                                                <span
+                                                    key={index}
+                                                    style={{
+                                                        color:
+                                                            index <
+                                                                (companyStrategies?.[company]?.rating ?? 0)
+                                                                ? "#fd7403"
+                                                                : "#CCCCCC",
+                                                        fontSize: "18px",
+                                                    }}
+                                                >
+                                                    ★
+                                                </span>
+                                            ))}
+                                        </td>
+
+
+
                                         <td><MdDeleteOutline className="icons delete" onClick={() => handleRemoveCompany(company)} />
                                         </td>
                                     </tr>

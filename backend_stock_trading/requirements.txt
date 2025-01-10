@@ -46,6 +46,7 @@ pyasn1_modules==0.4.1
 pycparser==2.22
 pyOpenSSL==24.3.0
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
 pytz==2024.2
 redis==5.2.1
 redis-cli==1.0.1
