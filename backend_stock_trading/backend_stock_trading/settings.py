@@ -156,7 +156,12 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-             "hosts": [os.getenv('REDIS_URL', 'redis://redis:6379')],  # Local Redis server
+            "hosts": [
+                os.getenv('REDIS_URL', 'redis://localhost:6379'),  # Local Redis or external Redis URL
+            ],
+            "ssl": {
+                "ssl_cert_reqs": 'CERT_REQUIRED',  # Adjust based on your security level
+            },
         },
     },
 }

@@ -1,5 +1,3 @@
-# backend_stock_trading/celery.py
-from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
 from dotenv import load_dotenv
@@ -9,21 +7,32 @@ load_dotenv()
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend_stock_trading.settings')
 
-app = Celery('backend_stock_trading', broker=os.getenv('REDIS_URL', 'redis://localhost:6379/0') )
+redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+redis_result_backend = os.getenv('REDIS_RESULT_BACKEND', 'redis://localhost:6379/1')
+
+# SSL setup for Celery (if using rediss://)
+if redis_url.startswith('rediss://'):
+    broker_transport_options = {
+        'ssl': {
+            'ssl_cert_reqs': 'CERT_REQUIRED',  # Use 'CERT_REQUIRED' in secure environments
+        }
+    }
+else:
+    broker_transport_options = {}
+
+app = Celery('backend_stock_trading', broker=redis_url, transport_options=broker_transport_options)
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
-# - namespace='CELERY' means all celery-related config keys should have a `CELERY_` prefix.
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
 
-
 app.conf.update(
-    broker_url=os.getenv('REDIS_URL', 'redis://redis:6379/0'),
-    result_backend=os.getenv('REDIS_RESULT_BACKEND', 'redis://redis:6379/1'),
+    broker_url=redis_url,
+    result_backend=redis_result_backend,
+    transport_options=broker_transport_options,
 )
 
-app.conf.worker_concurrency = 2 
-
+app.conf.worker_concurrency = 2
