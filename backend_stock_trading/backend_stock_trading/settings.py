@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+import ssl
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -160,7 +161,7 @@ CHANNEL_LAYERS = {
                 os.getenv('REDIS_URL', 'redis://localhost:6379'),  # Local Redis or external Redis URL
             ],
             "ssl": {
-                "ssl_cert_reqs": 'CERT_REQUIRED',  # Adjust based on your security level
+                "ssl_cert_reqs": ssl.CERT_OPTIONAL,  # Adjust based on your security level
             },
         },
     },

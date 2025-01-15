@@ -1,4 +1,5 @@
 import os
+import ssl
 from celery import Celery
 from dotenv import load_dotenv
 
@@ -14,13 +15,18 @@ redis_result_backend = os.getenv('REDIS_RESULT_BACKEND', 'redis://localhost:6379
 if redis_url.startswith('rediss://'):
     broker_transport_options = {
         'ssl': {
-            'ssl_cert_reqs': 'CERT_REQUIRED',  # Use 'CERT_REQUIRED' in secure environments
+            'ssl_cert_reqs': ssl.CERT_OPTIONAL,  
         }
     }
 else:
     broker_transport_options = {}
 
-app = Celery('backend_stock_trading', broker=redis_url, transport_options=broker_transport_options)
+app = Celery('backend_stock_trading',  broker_use_ssl = {
+        'ssl_cert_reqs': ssl.CERT_OPTIONAL
+     },
+     redis_backend_use_ssl = {
+        'ssl_cert_reqs': ssl.CERT_OPTIONAL
+     })
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
