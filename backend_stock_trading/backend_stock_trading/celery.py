@@ -21,12 +21,7 @@ if redis_url.startswith('rediss://'):
 else:
     broker_transport_options = {}
 
-app = Celery('backend_stock_trading',  broker_use_ssl = {
-        'ssl_cert_reqs': ssl.CERT_NONE
-     },
-     redis_backend_use_ssl = {
-        'ssl_cert_reqs': ssl.CERT_NONE
-     })
+app = Celery('backend_stock_trading')
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
