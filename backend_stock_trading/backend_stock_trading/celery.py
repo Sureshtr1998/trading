@@ -15,17 +15,17 @@ redis_result_backend = os.getenv('REDIS_RESULT_BACKEND', 'redis://localhost:6379
 if redis_url.startswith('rediss://'):
     broker_transport_options = {
         'ssl': {
-            'ssl_cert_reqs': ssl.CERT_OPTIONAL,  
+            'ssl_cert_reqs': ssl.CERT_NONE,  
         }
     }
 else:
     broker_transport_options = {}
 
 app = Celery('backend_stock_trading',  broker_use_ssl = {
-        'ssl_cert_reqs': ssl.CERT_OPTIONAL
+        'ssl_cert_reqs': ssl.CERT_NONE
      },
      redis_backend_use_ssl = {
-        'ssl_cert_reqs': ssl.CERT_OPTIONAL
+        'ssl_cert_reqs': ssl.CERT_NONE
      })
 
 # Using a string here means the worker doesn't have to serialize

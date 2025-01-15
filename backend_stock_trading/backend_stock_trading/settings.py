@@ -161,7 +161,7 @@ CHANNEL_LAYERS = {
                 os.getenv('REDIS_URL', 'redis://localhost:6379'),  # Local Redis or external Redis URL
             ],
             "ssl": {
-                "ssl_cert_reqs": ssl.CERT_OPTIONAL,  # Adjust based on your security level
+                "ssl_cert_reqs": ssl.CERT_NONE,  # Adjust based on your security level
             },
         },
     },
